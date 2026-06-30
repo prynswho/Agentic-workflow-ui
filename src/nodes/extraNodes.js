@@ -17,6 +17,7 @@ export const PythonNode =({id,data}) =>{
         }
         return Array.from(allValues);
     };
+    
 
     const validVariables = extractValidVars(text);
     // console.log(validVariables);
