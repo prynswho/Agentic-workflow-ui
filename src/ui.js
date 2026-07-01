@@ -54,9 +54,17 @@ export const PipelineUI = () => {
     } = useStore(selector, shallow);
 
     const getInitNodeData = (nodeID, type) => {
-      let nodeData = { id: nodeID, nodeType: `${type}` };
-      // console.log(nodeData);
-      return nodeData;
+      const defaults = {
+        text: {text: ''},
+        customInput:{ inputName: nodeID.replace('customInput-', '') },
+        customOutput:{ outputName: nodeID.replace('customOutput-', '') },
+        llm: { system: '', prompt: '' },
+      }
+      return {
+        id:nodeID,
+        nodeType:type,
+        ...(defaults[type] || {})
+      }
     }
 
     const onDrop = useCallback(

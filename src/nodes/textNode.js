@@ -1,49 +1,50 @@
 // textNode.js
-
 import { useUpdateNodeInternals } from "reactflow";
+import { useEffect } from "react";
+import { useStore } from "../store";
 import { NodeGenerator } from "../components/nodeGenerator";
-import {useState, useEffect} from "react";
 import { AutoResizeTextBox } from "../components/fieldRender";
 
-function TextNode({id,data}){
-    const [text,setText] = useState(data?.text || '');
-    const updateNodeIntervals = useUpdateNodeInternals();
+function TextNode({ id, data }) {
+    const updateNodeInternals = useUpdateNodeInternals();
+    const updateNodeField = useStore((state) => state.updateNodeField);
+
+    const text = data?.text || '';
 
     const extractValidVars = (text) => {
         const allValues = new Set();
         const jsRegex = /\{\{\s*([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\}\}/g;
         const matched = text.matchAll(jsRegex);
-        for(const matches of matched){
+        for (const matches of matched) {
             allValues.add(matches[1]);
         }
         return Array.from(allValues);
     };
 
     const validVariables = extractValidVars(text);
-    // console.log(validVariables);
 
-    const input = [];
-    if(validVariables.length > 0){
-        validVariables.forEach(variable => {
-            input.push({id:variable,type:"text"});
-        });
-    }
+    const input = validVariables.length > 0
+        ? validVariables.map(variable => ({ id: variable }))
+        : [{ id: 'input' }];
 
-    useEffect(() =>{
-        updateNodeIntervals(id);
-    },[input.length,updateNodeIntervals,id]);
-
+    useEffect(() => {
+        updateNodeInternals(id);
+    }, [input.length, updateNodeInternals, id]);
 
     return (
         <NodeGenerator
-        title="Text Node"
-        inputs={input}
-        outputs={[{id: "output1"}]}
-        accentColor = "#f2d200"
+            title="Text Node"
+            inputs={input}
+            outputs={[{ id: "output1" }]}
+            accentColor="#f2d200"
         >
-            <AutoResizeTextBox value={text} onChange={setText} placeholder= "text here" />
+            <AutoResizeTextBox
+                value={text}
+                onChange={(newValue) => updateNodeField(id, 'text', newValue)}
+                placeholder="text here"
+            />
         </NodeGenerator>
-    )
+    );
 }
 
-export  {TextNode};
+export { TextNode };
