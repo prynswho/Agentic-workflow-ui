@@ -112,5 +112,22 @@ export const RubyNode = ({id,data}) => {
 }
 
 
+export const CreateFolder = ({id,data}) => {
+    const fields=[{id: "folder name", type: "text"}, {id: "folder path", type: "text"}];
+    return (
+        <NodeGenerator
+        title="Create Folder"
+        inputs={[{id: "input1"}]}
+        outputs={[{id: "output1"}]}   //make it variable so inside one folder you can do multiple things 
+        accentColor = "#463e3e"
+        >
+            {fields.map(field => (
+            <input key={field.id} type={field.type} placeholder={field.id}/>
+            ))}
+        </NodeGenerator>
+    )
+}
+
+
 
 

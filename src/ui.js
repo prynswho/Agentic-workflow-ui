@@ -7,7 +7,7 @@ import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
 import { useStore } from './store';
 import { shallow } from 'zustand/shallow';
 import { InputNode } from './nodes/inputNode';
-import { JavaNode, PythonNode,RubyNode } from './nodes/extraNodes';
+import { CreateFolder, JavaNode, PythonNode,RubyNode } from './nodes/extraNodes';
 import { MLNode } from './nodes/extraNodes';
 import { LLMNode } from './nodes/llmNode';
 import { OutputNode } from './nodes/outputNode';
@@ -26,6 +26,7 @@ const nodeTypes = {
   java:JavaNode,
   ruby:RubyNode,
   c: CNode,
+  createFolder:CreateFolder,
   customOutput: OutputNode,
   text: TextNode,
 };
@@ -59,6 +60,7 @@ export const PipelineUI = () => {
         customInput:{ inputName: nodeID.replace('customInput-', '') },
         customOutput:{ outputName: nodeID.replace('customOutput-', '') },
         llm: { system: '', prompt: '' },
+        createFolder: { folderName: '' },
       }
       return {
         id:nodeID,

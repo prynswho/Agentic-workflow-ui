@@ -16,6 +16,7 @@ export const PipelineToolbar = () => {
                 <DraggableNode type='java' label='Java Node' />
                 <DraggableNode type='ruby' label='Ruby Node' />
                 <DraggableNode type='c' label='C++' />
+                <DraggableNode type='createFolder' label='Create Folder' />
             </div>
         </div>
     );
