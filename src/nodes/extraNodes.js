@@ -4,55 +4,28 @@ import { NodeGenerator } from "../components/nodeGenerator";
 import {useState, useEffect} from "react";
 import { AutoResizeTextBox } from "../components/fieldRender";
 
-export const PythonNode =({id,data}) =>{
-    const [text,setText] = useState(data?.text || '');
-    const updateNodeIntervals = useUpdateNodeInternals();
-
-    const extractValidVars = (text) => {
-        const allValues = new Set();
-        const jsRegex = /\{\{\s*([a-zA-Z_$][a-zA-Z0-9_$]*)\s*\}\}/g;
-        const matched = text.matchAll(jsRegex);
-        for(const matches of matched){
-            allValues.add(matches[1]);
-        }
-        return Array.from(allValues);
-    };
-    
-
-    const validVariables = extractValidVars(text);
-    // console.log(validVariables);
-
-    const input = [];
-    if(validVariables.length > 0){
-        validVariables.forEach(variable => {
-            input.push({id:variable,type:"text"});
-        });
-    }
-
-    
-
-    useEffect(() =>{
-        updateNodeIntervals(id);
-    },[input.length,updateNodeIntervals,id]);
-
+export const SendEmailNode =({id,data}) =>{
+    const fields=[{id: "recipient", type: "text"}, {id: "subject", type: "text"}, {id: "body", type: "text"}];
     return (
         <NodeGenerator
-        title="Python Node"
-        inputs={input}
+        title="Send Email"
+        inputs={[{id: "input1"}]}
         outputs={[{id: "output1"}]}
         accentColor = "#420eed"
         >
-            <AutoResizeTextBox value={text} onChange={setText} placeholder= "text here" />
+            {fields.map(field => (
+            <input key={field.id} type={field.type} placeholder={field.id}/>
+            ))}
         </NodeGenerator>
     )
 }
 
-export const MLNode = ({id,data}) => {
-    const fields=[{id: "field1", type: "text"}, {id: "field2", type: "number"}];
+export const ReadEmailNode = ({id,data}) => {
+    const fields=[{id: "mailbox", type: "text"}, {id: "maxCount", type: "number"}];
     return (
         <NodeGenerator
-        title="ML Node"
-        inputs={[{id: "input1"}, {id: "input2"}]}
+        title="Read Email"
+        inputs={[{id: "input1"}]}
         outputs={[{id: "output1"}, {id: "output2"},{id: "output3"}]}
         accentColor = "#33FF57"
         >
@@ -63,11 +36,11 @@ export const MLNode = ({id,data}) => {
     )
 }
 
-export const CNode =({id,data}) => {
-    const fields=[{id: "field1", type: "text"}, {id: "field2", type: "number"}];
+export const HTTPRequestNode =({id,data}) => {
+    const fields=[{id: "url", type: "text"}, {id: "method", type: "text"}];
     return (
         <NodeGenerator
-        title="C++ Node"
+        title="HTTP Request"
         inputs={[{id: "input1"}, {id: "input2"}]}
         outputs={[{id: "output1"}]}   
         accentColor = "#FF5733"
@@ -79,11 +52,11 @@ export const CNode =({id,data}) => {
     )
 }
 
-export const JavaNode = ({id,data}) => {
-    const fields=[{id: "field1", type: "text"}];
+export const DatabaseQueryNode = ({id,data}) => {
+    const fields=[{id: "connection", type: "text"}, {id: "query", type: "text"}];
     return (
         <NodeGenerator
-        title="Java Node"
+        title="Database Query"
         inputs={[{id: "input1"}]}
         outputs={[{id: "output1"}]}   
         accentColor = "#276a00"
@@ -95,11 +68,11 @@ export const JavaNode = ({id,data}) => {
     )
 }
 
-export const RubyNode = ({id,data}) => {
-    const fields=[{id: "field1", type: "text"}, {id: "field2", type: "number"}];
+export const WebScraperNode = ({id,data}) => {
+    const fields=[{id: "url", type: "text"}, {id: "selector", type: "text"}];
     return (
         <NodeGenerator
-        title="Ruby Node"
+        title="Web Scraper"
         inputs={[{id: "input1"}]}
         outputs={[{id: "output1"}, {id: "output2"}]}   
         accentColor = "#6a0202"

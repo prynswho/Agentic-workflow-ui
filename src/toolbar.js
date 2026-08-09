@@ -11,11 +11,11 @@ export const PipelineToolbar = () => {
                 <DraggableNode type='llm' label='LLM' />
                 <DraggableNode type='customOutput' label='Output' />
                 <DraggableNode type='text' label='Text' />
-                <DraggableNode type='python' label='Python' />
-                <DraggableNode type='mlNode' label='ML Node' />
-                <DraggableNode type='java' label='Java Node' />
-                <DraggableNode type='ruby' label='Ruby Node' />
-                <DraggableNode type='c' label='C++' />
+                <DraggableNode type='DatabaseQuery' label='Database Query Node' />
+                <DraggableNode type='HTTPRequestNode' label='HTTPRequestNode' />
+                <DraggableNode type='ReadEmailNode' label='ReadEmailNode' />
+                <DraggableNode type='SendEmailNode' label='SendEmailNode' />
+                <DraggableNode type='WebScraperNode' label='WebScraperNode' />
                 <DraggableNode type='createFolder' label='Create Folder' />
             </div>
         </div>

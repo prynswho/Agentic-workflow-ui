@@ -15,7 +15,7 @@ export const SubmitButton = () => {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      const response = await axios.post('http://localhost:8000/pipelines/parse', { nodes, edges });
+      const response = await axios.post('http://localhost:8001/pipelines/parse', { nodes, edges });
       setLoading(false);
       console.log('Response from backend:', response.data);
       const val = `nodes_number: ${response.data.num_nodes}  edges number: ${response.data.num_edges}  is_dag: ${response.data.is_dag}`;

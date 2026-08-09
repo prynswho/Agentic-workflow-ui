@@ -7,7 +7,7 @@ import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
 import { useStore } from './store';
 import { shallow } from 'zustand/shallow';
 import { InputNode } from './nodes/inputNode';
-import { CreateFolder, JavaNode, PythonNode,RubyNode } from './nodes/extraNodes';
+import { CreateFolder, DatabaseQueryNode, ReadEmailNode, SendEmailNode, WebScraperNode ,HTTPRequestNode} from './nodes/extraNodes';
 import { MLNode } from './nodes/extraNodes';
 import { LLMNode } from './nodes/llmNode';
 import { OutputNode } from './nodes/outputNode';
@@ -21,11 +21,11 @@ const proOptions = { hideAttribution: true };
 const nodeTypes = {
   customInput: InputNode,
   llm: LLMNode,
-  python: PythonNode,
-  mlNode: MLNode,
-  java:JavaNode,
-  ruby:RubyNode,
-  c: CNode,
+  DatabaseQueryNode: DatabaseQueryNode,
+  SendEmailNode:SendEmailNode,
+  ReadEmailNode:ReadEmailNode,
+  WebScraperNode:WebScraperNode,
+  HTTPRequestNode:HTTPRequestNode,
   createFolder:CreateFolder,
   customOutput: OutputNode,
   text: TextNode,
