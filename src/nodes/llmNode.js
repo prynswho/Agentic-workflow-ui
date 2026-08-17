@@ -36,7 +36,7 @@ function LLMNode({ id, data }) {
             title="LLM Node"
             inputs={input}
             outputs={[{ id: "output1" }]}
-            accentColor="#FF0000"
+            accentColor="#a78bfa"
         >
             <AutoResizeTextBox
                 value={text}

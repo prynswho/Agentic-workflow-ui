@@ -1,11 +1,11 @@
 import {Handle,Position} from 'reactflow'
-import { NodeTitle,StyledNodeBox , NodeBody, getAccentStyle,getTitleColor,AccentDot} from '../nodes/nodeStyles/nodeStyles'
+import { NodeTitle,StyledNodeBox , NodeBody, getAccentStyle,AccentDot} from '../nodes/nodeStyles/nodeStyles'
 
 export function NodeGenerator({ title, inputs, children, outputs, accentColor = '#888888'  }) {
 
     return (
         <StyledNodeBox style={getAccentStyle(accentColor)}>
-            <NodeTitle style={{ color: getTitleColor(accentColor) }}>
+            <NodeTitle>
                 <AccentDot color={accentColor} />
                 {title}
             </NodeTitle>

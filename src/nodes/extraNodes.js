@@ -1,8 +1,4 @@
-// import { nodeFactoryFunction } from "./nodeFactoryFunction";
-import { useUpdateNodeInternals } from "reactflow";
 import { NodeGenerator } from "../components/nodeGenerator";
-import {useState, useEffect} from "react";
-import { AutoResizeTextBox } from "../components/fieldRender";
 
 export const SendEmailNode =({id,data}) =>{
     const fields=[{id: "recipient", type: "text"}, {id: "subject", type: "text"}, {id: "body", type: "text"}];
@@ -11,7 +7,7 @@ export const SendEmailNode =({id,data}) =>{
         title="Send Email"
         inputs={[{id: "input1"}]}
         outputs={[{id: "output1"}]}
-        accentColor = "#420eed"
+        accentColor = "#a78bfa"
         >
             {fields.map(field => (
             <input key={field.id} type={field.type} placeholder={field.id}/>
@@ -27,7 +23,7 @@ export const ReadEmailNode = ({id,data}) => {
         title="Read Email"
         inputs={[{id: "input1"}]}
         outputs={[{id: "output1"}, {id: "output2"},{id: "output3"}]}
-        accentColor = "#33FF57"
+        accentColor = "#34d399"
         >
             {fields.map(field => (
             <input key={field.id} type={field.type} placeholder={field.id}/>
@@ -43,7 +39,7 @@ export const HTTPRequestNode =({id,data}) => {
         title="HTTP Request"
         inputs={[{id: "input1"}, {id: "input2"}]}
         outputs={[{id: "output1"}]}   
-        accentColor = "#FF5733"
+        accentColor = "#fb923c"
         >
             {fields.map(field => (
             <input key={field.id} type={field.type} placeholder={field.id}/>
@@ -59,7 +55,7 @@ export const DatabaseQueryNode = ({id,data}) => {
         title="Database Query"
         inputs={[{id: "input1"}]}
         outputs={[{id: "output1"}]}   
-        accentColor = "#276a00"
+        accentColor = "#2dd4bf"
         >
             {fields.map(field => (
             <input key={field.id} type={field.type} placeholder={field.id}/>
@@ -75,7 +71,7 @@ export const WebScraperNode = ({id,data}) => {
         title="Web Scraper"
         inputs={[{id: "input1"}]}
         outputs={[{id: "output1"}, {id: "output2"}]}   
-        accentColor = "#6a0202"
+        accentColor = "#f472b6"
         >
             {fields.map(field => (
             <input key={field.id} type={field.type} placeholder={field.id}/>
@@ -92,7 +88,7 @@ export const CreateFolder = ({id,data}) => {
         title="Create Folder"
         inputs={[{id: "input1"}]}
         outputs={[{id: "output1"}]}   //make it variable so inside one folder you can do multiple things 
-        accentColor = "#463e3e"
+        accentColor = "#fbbf24"
         >
             {fields.map(field => (
             <input key={field.id} type={field.type} placeholder={field.id}/>
@@ -100,7 +96,5 @@ export const CreateFolder = ({id,data}) => {
         </NodeGenerator>
     )
 }
-
-
 
 

@@ -3,16 +3,14 @@
 // --------------------------------------------------
 
 import { useState, useRef, useCallback } from 'react';
-import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
+import ReactFlow, { Controls, Background, BackgroundVariant, MiniMap } from 'reactflow';
 import { useStore } from './store';
 import { shallow } from 'zustand/shallow';
 import { InputNode } from './nodes/inputNode';
 import { CreateFolder, DatabaseQueryNode, ReadEmailNode, SendEmailNode, WebScraperNode ,HTTPRequestNode} from './nodes/extraNodes';
-import { MLNode } from './nodes/extraNodes';
 import { LLMNode } from './nodes/llmNode';
 import { OutputNode } from './nodes/outputNode';
 import { TextNode } from './nodes/textNode';
-import { CNode } from './nodes/extraNodes';
 
 import 'reactflow/dist/style.css';
 
@@ -39,9 +37,10 @@ const selector = (state) => ({
   onNodesChange: state.onNodesChange,
   onEdgesChange: state.onEdgesChange,
   onConnect: state.onConnect,
+  deleteSelectedNodes: state.deleteSelectedNodes,
 });
 
-export const PipelineUI = () => {
+export const PipelineUI = ({ theme }) => {
     const reactFlowWrapper = useRef(null);
     const [reactFlowInstance, setReactFlowInstance] = useState(null);
     const {
@@ -51,7 +50,8 @@ export const PipelineUI = () => {
       addNode,
       onNodesChange,
       onEdgesChange,
-      onConnect
+      onConnect,
+      deleteSelectedNodes,
     } = useStore(selector, shallow);
 
     const getInitNodeData = (nodeID, type) => {
@@ -99,7 +99,7 @@ export const PipelineUI = () => {
             addNode(newNode);
           }
         },
-        [reactFlowInstance]
+        [reactFlowInstance, addNode, getNodeID]
     );
 
     const onDragOver = useCallback((event) => {
@@ -108,8 +108,14 @@ export const PipelineUI = () => {
     }, []);
 
     return (
-        <>
-        <div ref={reactFlowWrapper} style={{width: '100wv', height: '70vh'}}>
+        <section className="canvas-section">
+          <div className="canvas-toolbar">
+            <div><span className="eyebrow">Canvas</span><strong>Untitled workflow</strong></div>
+            <button className="delete-button" type="button" onClick={deleteSelectedNodes}>
+              <span>⌫</span> Delete selected
+            </button>
+          </div>
+        <div ref={reactFlowWrapper} className="flow-canvas">
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
@@ -122,13 +128,16 @@ export const PipelineUI = () => {
                 nodeTypes={nodeTypes}
                 proOptions={proOptions}
                 snapGrid={[gridSize, gridSize]}
-                connectionLineType='smoothstep'
+                connectionLineType="bezier"
+                defaultEdgeOptions={{ type: 'bezier' }}
+                fitView
+                style={{ backgroundColor: theme === 'dark' ? '#080808' : '#f7f7f8' }}
             >
-                <Background color="#aaa" gap={gridSize} />
+                <Background variant={BackgroundVariant.Lines} color={theme === 'dark' ? '#262629' : '#dedee5'} gap={gridSize} size={1} />
                 <Controls />
-                <MiniMap />
+                <MiniMap nodeColor={theme === 'dark' ? '#a1a1aa' : '#71717a'} maskColor={theme === 'dark' ? 'rgba(8, 8, 8, 0.76)' : 'rgba(247, 247, 248, 0.72)'} />
             </ReactFlow>
         </div>
-        </>
+        </section>
     )
 }

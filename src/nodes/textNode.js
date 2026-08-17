@@ -36,7 +36,7 @@ function TextNode({ id, data }) {
             title="Text Node"
             inputs={input}
             outputs={[{ id: "output1" }]}
-            accentColor="#f2d200"
+            accentColor="#fbbf24"
         >
             <AutoResizeTextBox
                 value={text}

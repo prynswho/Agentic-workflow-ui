@@ -14,7 +14,7 @@ export const InputNode = ({ id, data }) => {
   ];
 
   return (
-    <NodeGenerator title="Input" outputs={[{ id: 'value' }]} inputs={[]} accentColor="#0ea5e9">
+    <NodeGenerator title="Input" outputs={[{ id: 'value' }]} inputs={[]} accentColor="#34d399">
       {fields.map((field) => (
         <label key={field.id} style={{ display: 'flex', flexDirection: 'column', fontSize: '0.75rem', gap: 4 }}>
           {field.label}

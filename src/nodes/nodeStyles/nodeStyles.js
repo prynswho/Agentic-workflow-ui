@@ -1,28 +1,36 @@
 // nodeStyles.js
 
-import { styled, alpha, darken } from '@mui/material/styles';
+import { styled, alpha } from '@mui/material/styles';
 
 export const StyledNodeBox = styled('div')({
   position: 'relative',
-  borderRadius: 14,
-  paddingTop: 20,
-  paddingBottom: 16,
-  paddingLeft: 16,
-  paddingRight: 16,
-  minWidth: 220,
-  backgroundColor: '#ffffff',     
-  border: '1px solid #ececec',
-  overflow: 'hidden',             
-  transition: '0.2s ease',
+  borderRadius: 12,
+  padding: '16px',
+  minWidth: 230,
+  backgroundColor: 'var(--node-bg)',
+  border: '1px solid var(--node-border)',
+  overflow: 'visible',
+  color: 'var(--node-text)',
+  transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
   '&:hover': {
-    transform: 'translateY(-3px)',
+    transform: 'translateY(-2px)',
+    borderColor: 'var(--node-accent)',
   },
+  '& input, & select, & textarea': {
+    width: '100%', boxSizing: 'border-box', borderRadius: 7, border: '1px solid var(--node-field-border)',
+    padding: '8px 9px', background: 'var(--node-field-bg)', color: 'var(--node-text)', font: 'inherit', fontSize: '0.78rem', outline: 'none',
+  },
+  '& input:focus, & select:focus, & textarea:focus': { borderColor: 'var(--node-accent)', boxShadow: '0 0 0 3px var(--node-glow)' },
+  '& textarea': { minHeight: 58, resize: 'vertical' },
+  '& input::placeholder, & textarea::placeholder': { color: 'var(--node-muted)' },
+  '& .react-flow__handle': { width: 10, height: 10, border: '2px solid var(--node-bg)', background: 'var(--node-accent)' },
 });
 
 export const NodeTitle = styled('div')({
   fontWeight: 700,
-  fontSize: '0.95rem',
-  marginBottom: 10,
+  fontSize: '0.86rem',
+  letterSpacing: '-0.01em',
+  marginBottom: 12,
   display: 'flex',
   alignItems: 'center',
   gap: 8,
@@ -31,12 +39,7 @@ export const NodeTitle = styled('div')({
 export const NodeBody = styled('div')({
   display: 'flex',
   flexDirection: 'column',
-  gap: 8,
-  '& input, & textarea': {
-    width: '100%',
-    boxSizing: 'border-box',
-    borderRadius: 6,
-  },
+  gap: 9,
 });
 
 
@@ -50,11 +53,9 @@ export const AccentDot = styled('span')(({ color }) => ({
 
 export function getAccentStyle(color) {
   return {
-    boxShadow: `0 4px 16px 0 ${alpha(color, 0.18)}, 0 1px 3px 0 ${alpha(color, 0.1)}`,
-    borderTop: `5px solid ${color}`,
+    '--node-accent': color,
+    '--node-glow': alpha(color, 0.16),
+    boxShadow: `0 12px 26px ${alpha(color, 0.12)}, 0 2px 5px rgba(15, 23, 42, 0.08)`,
+    borderTop: `3px solid ${color}`,
   };
-}
-
-export function getTitleColor(color) {
-  return darken(color, 0.25); 
 }
