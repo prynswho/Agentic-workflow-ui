@@ -16,10 +16,11 @@ export const SubmitButton = () => {
       setRunResult(null);
       const response = await axios.post('http://localhost:8001/pipelines/parse', { nodes, edges });
       console.log('Response from backend:', response.data);
-      const lastLog = response.data.log?.[response.data.log.length - 1];
-      const lastMessage = lastLog?.output?.results;
-      if (response.data.status === 'success' && typeof lastMessage === 'string') {
-        setRunResult(lastMessage);
+      const runResults = Object.entries(response.data.results || {})
+        .filter(([, output]) => output.status === 'success' && typeof output.results === 'string')
+        .map(([node, output]) => ({ node, message: output.results }));
+      if (response.data.status === 'success') {
+        setRunResult(runResults);
       }
       const val = response.data.status === 'success'
         ? 'Flow completed. Open the Results tab to view the latest response.'

@@ -3,11 +3,13 @@ import { useUpdateNodeInternals } from "reactflow";
 import { useEffect } from "react";
 import { useStore } from "../store";
 import { NodeGenerator } from "../components/nodeGenerator";
-import { AutoResizeTextBox } from "../components/fieldRender";
+import { PromptEditorModal } from "../components/promptEditorModal";
+import { useState } from "react";
 
 function LLMNode({ id, data }) {
     const updateNodeInternals = useUpdateNodeInternals();
     const updateNodeField = useStore((state) => state.updateNodeField);
+    const [isEditorOpen, setIsEditorOpen] = useState(false);
 
     const text = data?.text || '';
 
@@ -33,16 +35,14 @@ function LLMNode({ id, data }) {
 
     return (
         <NodeGenerator
-            title="LLM Node"
+            title="Agent"
             inputs={input}
             outputs={[{ id: "output1" }]}
             accentColor="#a78bfa"
         >
-            <AutoResizeTextBox
-                value={text}
-                onChange={(newValue) => updateNodeField(id, 'text', newValue)}
-                placeholder="text here"
-            />
+            <button className="node-config-button nodrag" type="button" onClick={() => setIsEditorOpen(true)}>Configure prompt</button>
+            <span className="node-config-hint">{text ? 'Prompt configured' : 'Add instructions for the model'}</span>
+            {isEditorOpen && <PromptEditorModal title="Configure agent" description="Write the goal and instructions your agent should follow." value={text} onChange={(newValue) => updateNodeField(id, 'text', newValue)} onClose={() => setIsEditorOpen(false)} placeholder="Describe what you want the agent to do…" />}
         </NodeGenerator>
     );
 }

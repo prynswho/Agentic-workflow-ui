@@ -1,26 +1,24 @@
 // inputNode.js
 
-import { useState } from 'react';
 import { NodeGenerator } from "../components/nodeGenerator";
-import { fieldRender } from "../components/fieldRender";
+import { useState } from 'react';
+import { useStore } from '../store';
+import { NodeConfigModal } from '../components/nodeConfigModal';
 
 export const InputNode = ({ id, data }) => {
-  const [currName, setCurrName] = useState(data?.inputName || id.replace('customInput-', 'input_'));
-  const [inputType, setInputType] = useState(data.inputType || 'Text');
-
-  const fields = [
-    { id: 'name', label: 'Name', type: 'text', value: currName, onChange: setCurrName },
-    { id: 'type', label: 'Type', type: 'select', options: ['Text', 'File'], value: inputType, onChange: setInputType },
-  ];
+  const updateNodeField = useStore((state) => state.updateNodeField);
+  const [isConfigOpen, setIsConfigOpen] = useState(false);
+  const values = { name: data?.name ?? id.replace('customInput-', 'input_'), inputType: data?.inputType ?? 'text', value: data?.value ?? '' };
 
   return (
     <NodeGenerator title="Input" outputs={[{ id: 'value' }]} inputs={[]} accentColor="#34d399">
-      {fields.map((field) => (
-        <label key={field.id} style={{ display: 'flex', flexDirection: 'column', fontSize: '0.75rem', gap: 4 }}>
-          {field.label}
-          {fieldRender(field, field.value, field.onChange)}
-        </label>
-      ))}
+      <button className="node-config-button nodrag" type="button" onClick={() => setIsConfigOpen(true)}>Configure input</button>
+      <span className="node-config-hint">{values.name}: {values.value ? 'value set' : 'no value set'}</span>
+      {isConfigOpen && <NodeConfigModal title="Configure input" description="Set the value supplied when this workflow runs." values={values} onChange={(field, value) => updateNodeField(id, field, value)} onClose={() => setIsConfigOpen(false)} fields={[
+        { name: 'name', label: 'Input name', placeholder: 'input' },
+        { name: 'inputType', label: 'Input type', type: 'select', options: [{ value: 'text', label: 'Text' }, { value: 'file', label: 'File path' }] },
+        { name: 'value', label: 'Value', type: 'textarea', placeholder: 'Enter the input value' },
+      ]} />}
     </NodeGenerator>
   );
 }

@@ -1,7 +1,16 @@
 import { NodeGenerator } from "../components/nodeGenerator";
+import { useState } from "react";
+import { useStore } from "../store";
+import { EmailEditorModal } from "../components/promptEditorModal";
 
 export const SendEmailNode =({id,data}) =>{
-    const fields=[{id: "recipient", type: "text"}, {id: "subject", type: "text"}, {id: "body", type: "text"}];
+    const [isEditorOpen, setIsEditorOpen] = useState(false);
+    const updateNodeField = useStore((state) => state.updateNodeField);
+    const emailDetails = {
+        recipient: data?.recipient || '',
+        subject: data?.subject || '',
+        body: data?.body || '',
+    };
     return (
         <NodeGenerator
         title="Send Email"
@@ -9,9 +18,9 @@ export const SendEmailNode =({id,data}) =>{
         outputs={[{id: "output1"}]}
         accentColor = "#a78bfa"
         >
-            {fields.map(field => (
-            <input key={field.id} type={field.type} placeholder={field.id}/>
-            ))}
+            <button className="node-config-button nodrag" type="button" onClick={() => setIsEditorOpen(true)}>Configure email</button>
+            <span className="node-config-hint">{emailDetails.recipient ? `To: ${emailDetails.recipient}` : 'Set recipient, subject, and message'}</span>
+            {isEditorOpen && <EmailEditorModal values={emailDetails} onChange={(field, value) => updateNodeField(id, field, value)} onClose={() => setIsEditorOpen(false)} />}
         </NodeGenerator>
     )
 }
@@ -96,5 +105,4 @@ export const CreateFolder = ({id,data}) => {
         </NodeGenerator>
     )
 }
-
 

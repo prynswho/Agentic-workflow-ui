@@ -1,26 +1,24 @@
 // outputNode.js
 
 import { useState } from 'react';
-import {fieldRender} from '../components/fieldRender.js'
 import { NodeGenerator } from "../components/nodeGenerator.js";
+import { useStore } from '../store';
+import { ResultViewerModal } from '../components/promptEditorModal';
 
-export const OutputNode = ({ id, data }) => {
-  const [currName, setCurrName] = useState(data?.outputName || id.replace('customOutput-', 'output_'));
-  const [outputType, setOutputType] = useState(data.outputType || 'Text');
-
-  const fields = [
-    { id: 'name', label: 'Name', type: 'text', value: currName, onChange: setCurrName },
-    { id: 'type', label: 'Type', type: 'select', options: ['Text', 'Image'], value: outputType, onChange: setOutputType },
-  ];
+export const OutputNode = ({ id }) => {
+  const [isResultOpen, setIsResultOpen] = useState(false);
+  const edges = useStore((state) => state.edges);
+  const runResults = useStore((state) => state.runResult);
+  const incomingNodeIds = edges.filter((edge) => edge.target === id).map((edge) => edge.source);
+  const result = runResults?.find((item) => incomingNodeIds.includes(item.node));
 
   return (
     <NodeGenerator title="Output" inputs={[{ id: 'value' }]} outputs={[]} accentColor="#fb923c">
-      {fields.map((field) => (
-        <label key={field.id} style={{ display: 'flex', flexDirection: 'column', fontSize: '0.75rem', gap: 4 }}>
-          {field.label}
-          {fieldRender(field, field.value, field.onChange)}
-        </label>
-      ))}
+      <button className="node-config-button nodrag" type="button" disabled={!result} onClick={() => setIsResultOpen(true)}>
+        {result ? 'View result' : 'No result available'}
+      </button>
+      <span className="node-config-hint">{result ? `Latest response from ${result.node}` : incomingNodeIds.length ? 'Run the flow to load this output' : 'Connect a node to view its output'}</span>
+      {isResultOpen && result && <ResultViewerModal nodeName={result.node} message={result.message} onClose={() => setIsResultOpen(false)} />}
     </NodeGenerator>
   );
 }

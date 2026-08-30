@@ -3,11 +3,13 @@ import { useUpdateNodeInternals } from "reactflow";
 import { useEffect } from "react";
 import { useStore } from "../store";
 import { NodeGenerator } from "../components/nodeGenerator";
-import { AutoResizeTextBox } from "../components/fieldRender";
+import { PromptEditorModal } from "../components/promptEditorModal";
+import { useState } from "react";
 
 function TextNode({ id, data }) {
     const updateNodeInternals = useUpdateNodeInternals();
     const updateNodeField = useStore((state) => state.updateNodeField);
+    const [isEditorOpen, setIsEditorOpen] = useState(false);
 
     const text = data?.text || '';
 
@@ -38,11 +40,9 @@ function TextNode({ id, data }) {
             outputs={[{ id: "output1" }]}
             accentColor="#fbbf24"
         >
-            <AutoResizeTextBox
-                value={text}
-                onChange={(newValue) => updateNodeField(id, 'text', newValue)}
-                placeholder="text here"
-            />
+            <button className="node-config-button nodrag" type="button" onClick={() => setIsEditorOpen(true)}>Edit template</button>
+            <span className="node-config-hint">{text ? 'Template configured' : 'Add reusable text content'}</span>
+            {isEditorOpen && <PromptEditorModal title="Edit text template" description="Create your text content and insert variables when needed." value={text} onChange={(newValue) => updateNodeField(id, 'text', newValue)} onClose={() => setIsEditorOpen(false)} placeholder="Write your text template…" />}
         </NodeGenerator>
     );
 }

@@ -7,10 +7,12 @@ import ReactFlow, { Controls, Background, BackgroundVariant, MiniMap } from 'rea
 import { useStore } from './store';
 import { shallow } from 'zustand/shallow';
 import { InputNode } from './nodes/inputNode';
-import { CreateFolder, DatabaseQueryNode, ReadEmailNode, SendEmailNode, WebScraperNode ,HTTPRequestNode} from './nodes/extraNodes';
+import { DatabaseQueryNode, ReadEmailNode, SendEmailNode, WebScraperNode ,HTTPRequestNode} from './nodes/extraNodes';
 import { LLMNode } from './nodes/llmNode';
 import { OutputNode } from './nodes/outputNode';
-import { TextNode } from './nodes/textNode';
+import { LoopNode } from './nodes/loopNode';
+import { ConditionalNode } from './nodes/conditionalNode';
+import { HumanInTheLoopNode } from './nodes/humanInTheLoopNode';
 
 import 'reactflow/dist/style.css';
 
@@ -24,9 +26,10 @@ const nodeTypes = {
   ReadEmailNode:ReadEmailNode,
   WebScraperNode:WebScraperNode,
   HTTPRequestNode:HTTPRequestNode,
-  createFolder:CreateFolder,
   customOutput: OutputNode,
-  text: TextNode,
+  loop: LoopNode,
+  conditional: ConditionalNode,
+  humanInTheLoop: HumanInTheLoopNode,
 };
 
 const selector = (state) => ({
@@ -56,11 +59,12 @@ export const PipelineUI = ({ theme }) => {
 
     const getInitNodeData = (nodeID, type) => {
       const defaults = {
-        text: {text: ''},
-        customInput:{ inputName: nodeID.replace('customInput-', '') },
+        customInput:{ name: nodeID.replace('customInput-', ''), inputType: 'text', value: '' },
         customOutput:{ outputName: nodeID.replace('customOutput-', '') },
-        llm: { system: '', prompt: '' },
-        createFolder: { folderName: '' },
+        llm: { text: '', system: '' },
+        loop: { iterations: 3, itemName: 'item' },
+        conditional: { leftOperand: '', operator: 'equals', rightOperand: '' },
+        humanInTheLoop: { prompt: 'Review this step before continuing.', decision: 'pending' },
       }
       return {
         id:nodeID,
