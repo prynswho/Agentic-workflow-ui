@@ -12,6 +12,7 @@ export const useStore = create((set, get) => ({
     nodes: [],
     edges: [],
     runResult: null,
+    pendingApproval: null,
     getNodeID: (type) => {
         const newIDs = {...get().nodeIDs};
         if (newIDs[type] === undefined) {
@@ -50,6 +51,11 @@ export const useStore = create((set, get) => ({
       });
     },
     setRunResult: (result) => set({ runResult: result }),
+    setPendingApproval: (approval) => set({ pendingApproval: approval }),
+    setPipeline: (pipeline) => set({
+      nodes: Array.isArray(pipeline?.nodes) ? pipeline.nodes : [],
+      edges: Array.isArray(pipeline?.edges) ? pipeline.edges : [],
+    }),
     updateNodeField: (nodeId, fieldName, fieldValue) => {
       set({
         nodes: get().nodes.map((node) => node.id === nodeId
